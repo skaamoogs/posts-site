@@ -1,0 +1,11 @@
+.card {
+  display: flex;
+  flex-direction: row;
+}
+
+.avatar {
+  object-fit: cover;
+  border-radius: 100%;
+  box-sizing: border-box;
+  margin: 16px;
+}
