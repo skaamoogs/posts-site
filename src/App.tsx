@@ -9,12 +9,12 @@ import { UserInfo } from "./pages/user/user-info";
 
 const routes: RouteObject[] = [
   {
-    path: LINKS.Root,
+    path: LINKS.Root.path,
     element: <Layout />,
     children: [
       { index: true, element: <Home /> },
-      { path: LINKS.About, element: <About /> },
-      { path: LINKS.User, element: <UserInfo /> },
+      { path: LINKS.About.path, element: <About /> },
+      { path: LINKS.User.path, element: <UserInfo /> },
     ],
   },
 ];

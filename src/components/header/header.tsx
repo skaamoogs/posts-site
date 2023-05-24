@@ -10,7 +10,7 @@ export const Header = () => {
     <header>
       <Navbar bg="dark" variant="dark" expand={expand}>
         <Container>
-          <Navbar.Toggle aria-controls="menu" />
+          <Navbar.Toggle aria-controls="menu" className="border-0"/>
           <Navbar.Offcanvas
             id="menu"
             aria-labelledby="menu-title"
@@ -23,8 +23,8 @@ export const Header = () => {
             </Offcanvas.Header>
             <Offcanvas.Body>
               <Nav>
-                <Nav.Link as={Link} to={LINKS.Root}>Посты</Nav.Link>
-                <Nav.Link as={Link} to={LINKS.About}>Обо мне</Nav.Link>
+                <Nav.Link as={Link} to={LINKS.Root.path}>Посты</Nav.Link>
+                <Nav.Link as={Link} to={LINKS.About.path}>Обо мне</Nav.Link>
               </Nav>
             </Offcanvas.Body>
           </Navbar.Offcanvas>
