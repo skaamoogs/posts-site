@@ -13,8 +13,8 @@ const routes: RouteObject[] = [
     element: <Layout />,
     children: [
       { index: true, element: <Home /> },
-      { path: LINKS.About.path, element: <About /> },
-      { path: LINKS.User.path, element: <UserInfo /> },
+      { path: LINKS.About.path, element: <About title={LINKS.About.title} /> },
+      { path: LINKS.User.path, element: <UserInfo title={LINKS.User.title} /> },
     ],
   },
 ];

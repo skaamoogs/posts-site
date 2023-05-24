@@ -1,11 +1,11 @@
 import { Col, Container, Offcanvas, Row } from "react-bootstrap";
 import { Post } from "../../components/post/post";
 import { mockComments, mockPosts } from "../../const";
-import style from "./home.module.scss";
 import { useState } from "react";
 import { Comment } from "../../components/comment/comment";
+import { IPageProps } from "../../interfaces";
 
-export const Home = () => {
+export const Home = ({ title }: IPageProps) => {
   const [show, setShow] = useState(false);
 
   const showComments = () => {
@@ -17,22 +17,22 @@ export const Home = () => {
   };
 
   return (
-    <main>
-      <Container>
-        <Row xs={1} lg={2}>
-          {mockPosts.map((post) => (
-            <Col key={post.id}>
-              <Post
-                title={post.title}
-                text={post.body}
-                avatarSrc="./avatar.jpg"
-                id={post.id}
-                showComments={showComments}
-              />
-            </Col>
-          ))}
-        </Row>
-      </Container>
+    <>
+      {title && <p className="h1">{title}</p>}
+      <Row xs={1} lg={2}>
+        {mockPosts.map((post) => (
+          <Col key={post.id}>
+            <Post
+              title={post.title}
+              text={post.body}
+              avatarSrc="./avatar.jpg"
+              id={post.id}
+              showComments={showComments}
+              loading
+            />
+          </Col>
+        ))}
+      </Row>
       <Offcanvas show={show} placement="end" onHide={closeComments}>
         <Offcanvas.Header closeButton>
           <Offcanvas.Title>Комментарии</Offcanvas.Title>
@@ -40,7 +40,7 @@ export const Home = () => {
         <Offcanvas.Body>
           {mockComments.map((comment) => {
             return (
-              <Comment 
+              <Comment
                 key={comment.id}
                 id={comment.id}
                 email={comment.email}
@@ -50,6 +50,6 @@ export const Home = () => {
           })}
         </Offcanvas.Body>
       </Offcanvas>
-    </main>
+    </>
   );
 };
