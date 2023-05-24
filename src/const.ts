@@ -1,7 +1,7 @@
 export const LINKS = {
-  Root: {path: "/", title: "Посты"},
-  About: {path: "/about", title: "Обо мне"},
-  User: {path: "/user", title: "Информация о пользователе"},
+  Root: { path: "/", title: "Посты" },
+  About: { path: "/about", title: "Обо мне" },
+  User: { path: "/user", title: "Информация о пользователе" },
 };
 
 export const mockPosts = [
@@ -757,3 +757,27 @@ export const mockComments = [
     body: "harum non quasi et ratione\ntempore iure ex voluptates in ratione\nharum architecto fugit inventore cupiditate\nvoluptates magni quo et",
   },
 ];
+
+export const mockUser = {
+  id: 2,
+  name: "Ervin Howell",
+  username: "Antonette",
+  email: "Shanna@melissa.tv",
+  address: {
+    street: "Victor Plains",
+    suite: "Suite 879",
+    city: "Wisokyburgh",
+    zipcode: "90566-7771",
+    geo: {
+      lat: "-43.9509",
+      lng: "-34.4618",
+    },
+  },
+  phone: "010-692-6593 x09125",
+  website: "anastasia.net",
+  company: {
+    name: "Deckow-Crist",
+    catchPhrase: "Proactive didactic contingency",
+    bs: "synergize scalable supply-chains",
+  },
+};

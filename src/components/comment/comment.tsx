@@ -1,14 +1,7 @@
 import { Card } from "react-bootstrap";
+import { IComment } from "../../interfaces";
 
-interface ICommentProps {
-  id: number;
-  postId?: number;
-  name?: string;
-  email: string;
-  body: string;
-}
-
-export const Comment = (props: ICommentProps) => {
+export const Comment = (props: IComment) => {
   return (
     <Card className="border-0 mt-3">
       <Card.Body className="px-0">

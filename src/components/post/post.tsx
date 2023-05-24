@@ -1,13 +1,11 @@
-import { Button, Card, Col, Image, Placeholder, Row } from "react-bootstrap";
+import { Button, Card, Col, Placeholder, Row } from "react-bootstrap";
 import style from "./post.module.scss";
 import { Link } from "react-router-dom";
 import { LINKS } from "../../const";
 import { Avatar } from "../avatar/avatar";
+import { IPost } from "../../interfaces";
 
-interface IPostProps {
-  id: number;
-  title: string;
-  text: string;
+interface IPostProps extends IPost {
   avatarSrc: string;
   loading?: boolean;
   showComments: () => void;
@@ -18,7 +16,7 @@ export const Post = (props: IPostProps) => {
     <Card className="border-0 my-3" style={{ minWidth: "340px" }}>
       <Row>
         <Col xs={3}>
-          <Link to={`${LINKS.User.path}/${props.id}`}>
+          <Link to={`${LINKS.User.path}/${props.userId}`}>
             <Avatar src={props.avatarSrc} className="m-3" />
           </Link>
         </Col>
@@ -48,7 +46,7 @@ const CardBody = (props: IPostProps) => {
   return (
     <Card.Body>
       <Card.Title>{props.title}</Card.Title>
-      <Card.Text>{props.text}</Card.Text>
+      <Card.Text>{props.body}</Card.Text>
       <Button variant="success" onClick={props.showComments}>
         Комментарии
       </Button>

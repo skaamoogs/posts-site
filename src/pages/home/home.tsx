@@ -1,4 +1,4 @@
-import { Col, Container, Offcanvas, Row } from "react-bootstrap";
+import { Col, Offcanvas, Row } from "react-bootstrap";
 import { Post } from "../../components/post/post";
 import { mockComments, mockPosts } from "../../const";
 import { useState } from "react";
@@ -23,12 +23,9 @@ export const Home = ({ title }: IPageProps) => {
         {mockPosts.map((post) => (
           <Col key={post.id}>
             <Post
-              title={post.title}
-              text={post.body}
+              {...post}
               avatarSrc="./avatar.jpg"
-              id={post.id}
               showComments={showComments}
-              loading
             />
           </Col>
         ))}
@@ -39,14 +36,7 @@ export const Home = ({ title }: IPageProps) => {
         </Offcanvas.Header>
         <Offcanvas.Body>
           {mockComments.map((comment) => {
-            return (
-              <Comment
-                key={comment.id}
-                id={comment.id}
-                email={comment.email}
-                body={comment.body}
-              />
-            );
+            return <Comment {...comment} />;
           })}
         </Offcanvas.Body>
       </Offcanvas>
