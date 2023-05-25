@@ -13,14 +13,14 @@ interface IPostProps extends IPost {
 
 export const Post = (props: IPostProps) => {
   return (
-    <Card className="border-0 my-3" style={{ minWidth: "340px" }}>
+    <Card className={`border-0 my-3`}>
       <Row>
-        <Col xs={3}>
+        <Col xs={4} sm={3}>
           <Link to={`${LINKS.User.path}/${props.userId}`}>
             <Avatar src={props.avatarSrc} className="m-3" />
           </Link>
         </Col>
-        <Col xs={9}>
+        <Col xs={12} sm={9}>
           <CardBody {...props} />
         </Col>
       </Row>

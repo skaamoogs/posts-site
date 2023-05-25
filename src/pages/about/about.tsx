@@ -1,10 +1,10 @@
-import { Card, Col, Image, Row } from "react-bootstrap";
+import { Col, Image, Row } from "react-bootstrap";
 import { IPageProps } from "../../interfaces";
 
 export const About = ({ title }: IPageProps) => {
   return (
     <>
-      {title && <p className="h1 my-4">{title}</p>}
+      {title && <p className="h2 my-4">{title}</p>}
       <div>
         <Row>
           <Col xs={6} sm={5} md={4} lg={3}>
@@ -31,7 +31,6 @@ export const About = ({ title }: IPageProps) => {
                   научно-технических конференциях.
                   <br /> Увлекаюсь лыжами и бегом.
                 </p>
-
               </div>
             </div>
           </Col>
