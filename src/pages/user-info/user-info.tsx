@@ -1,22 +1,27 @@
-import { IPageProps, IUserInfo } from "../../interfaces";
 import { LINKS, mockUser } from "../../const";
 import style from "./user-info.module.scss";
-import {
-  Button,
-  Col,
-  Container,
-  ListGroup,
-  Placeholder,
-  Row,
-} from "react-bootstrap";
+import { Button, Container, ListGroup, Placeholder } from "react-bootstrap";
 import { PostsList } from "../../components/posts-list/posts-list";
 import { Link } from "react-router-dom";
+import PostsController from "../../controllers/posts.controller";
+import { useEffect, useState } from "react";
+import { IPost } from "../../interfaces";
 
 interface IUserInfoProps {
   loading?: boolean;
 }
 
 export const UserInfo = (props: IUserInfoProps) => {
+  const [posts, setPosts] = useState<IPost[]>([]);
+
+  useEffect(() => {
+    const getPosts = async () => {
+      const posts = await PostsController.getPosts();
+      console.log(posts);
+    };
+    getPosts();
+  }, []);
+
   return (
     <Container className="my-4">
       <main>
@@ -24,7 +29,7 @@ export const UserInfo = (props: IUserInfoProps) => {
           <Button variant="outline-success">Назад</Button>
         </Link>
         <UserCard {...props} />
-        <PostsList />
+        <PostsList posts={posts} />
       </main>
     </Container>
   );
@@ -35,7 +40,9 @@ const UserCard = ({ loading }: IUserInfoProps) => {
 
   if (loading) {
     return (
-      <div className={`rounded mt-4 p-3 bg-light bg-gradient ${style.placeholder}`}>
+      <div
+        className={`rounded mt-4 p-3 bg-light bg-gradient ${style.placeholder}`}
+      >
         <Placeholder as="div" animation="glow">
           <Placeholder xs={6} />
         </Placeholder>

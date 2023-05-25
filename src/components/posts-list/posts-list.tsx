@@ -3,9 +3,16 @@ import { Post } from "../post/post";
 import { mockComments, mockPosts } from "../../const";
 import { Comment } from "../comment/comment";
 import { useState } from "react";
+import { IPost } from "../../interfaces";
 
-export const PostsList = () => {
+interface IPostListProps {
+  posts: IPost[];
+  loading?: boolean;
+}
+
+export const PostsList = (props: IPostListProps) => {
   const [show, setShow] = useState(false);
+  const { posts, loading } = props;
 
   const showComments = () => {
     setShow(true);
@@ -18,12 +25,13 @@ export const PostsList = () => {
   return (
     <>
       <Row xs={1} lg={2}>
-        {mockPosts.map((post) => (
+        {posts.map((post) => (
           <Col key={post.id}>
             <Post
               {...post}
               avatarSrc="/avatar.jpg"
               showComments={showComments}
+              loading={loading}
             />
           </Col>
         ))}
@@ -34,7 +42,7 @@ export const PostsList = () => {
         </Offcanvas.Header>
         <Offcanvas.Body>
           {mockComments.map((comment) => {
-            return <Comment {...comment} />;
+            return <Comment key={comment.id} {...comment} />;
           })}
         </Offcanvas.Body>
       </Offcanvas>
