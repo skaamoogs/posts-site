@@ -36,10 +36,10 @@ const CardBody = (props: IPostProps) => {
           <Placeholder xs={6} />
         </Placeholder>
         <Placeholder as={Card.Text} animation="glow">
-          <Placeholder xs={7} /> <Placeholder xs={4} /> <Placeholder xs={4} />{" "}
+          <Placeholder xs={7} /> <Placeholder xs={4} /> <Placeholder xs={4} />
           <Placeholder xs={6} /> <Placeholder xs={8} />
         </Placeholder>
-        <Placeholder.Button variant="success" xs={6} />
+        <Placeholder.Button variant="outline-success" xs={6} />
       </Card.Body>
     );
   }
@@ -47,7 +47,7 @@ const CardBody = (props: IPostProps) => {
     <Card.Body>
       <Card.Title>{props.title}</Card.Title>
       <Card.Text>{props.body}</Card.Text>
-      <Button variant="success" onClick={props.showComments}>
+      <Button variant="outline-success" onClick={props.showComments}>
         Комментарии
       </Button>
     </Card.Body>

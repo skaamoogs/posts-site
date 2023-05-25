@@ -14,11 +14,11 @@ const routes: RouteObject[] = [
     children: [
       { index: true, element: <Home /> },
       { path: LINKS.About.path, element: <About title={LINKS.About.title} /> },
-      {
-        path: `${LINKS.User.path}/:userId`,
-        element: <UserInfo title={LINKS.User.title} />,
-      },
     ],
+  },
+  {
+    path: `${LINKS.User.path}/:userId`,
+    element: <UserInfo />,
   },
 ];
 
