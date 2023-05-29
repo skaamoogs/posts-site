@@ -1,26 +1,42 @@
-import { LINKS, mockUser } from "../../const";
+import { LINKS } from "../../const";
 import style from "./user-info.module.scss";
-import { Button, Container, ListGroup, Placeholder } from "react-bootstrap";
+import {
+  Button,
+  Container,
+  ListGroup,
+  Placeholder,
+  Spinner,
+} from "react-bootstrap";
 import { PostsList } from "../../components/posts-list/posts-list";
-import { Link } from "react-router-dom";
-import PostsController from "../../controllers/posts.controller";
-import { useEffect, useState } from "react";
-import { IPost } from "../../interfaces";
+import { Link, useParams } from "react-router-dom";
+import { useEffect } from "react";
+import {
+  fetchUserInfoRequested,
+  fetchUserPostsRequested,
+} from "../../store/user/userSlice";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  userInfoSelector,
+  userLoadingSelector,
+  userPostsSelector,
+} from "../../store/user/userSelector";
 
-interface IUserInfoProps {
-  loading?: boolean;
+interface IUserCardProps {
+  userId: number;
 }
 
-export const UserInfo = (props: IUserInfoProps) => {
-  const [posts, setPosts] = useState<IPost[]>([]);
+export const UserInfo = () => {
+  const dispatch = useDispatch();
+  const posts = useSelector(userPostsSelector);
+  const loading = useSelector(userLoadingSelector);
+  const { userId } = useParams();
 
   useEffect(() => {
-    const getPosts = async () => {
-      const posts = await PostsController.getPosts();
-      console.log(posts);
-    };
-    getPosts();
-  }, []);
+    dispatch({
+      type: fetchUserPostsRequested.type,
+      payload: { userId: Number(userId) },
+    });
+  }, [dispatch, userId]);
 
   return (
     <Container className="my-4">
@@ -28,15 +44,27 @@ export const UserInfo = (props: IUserInfoProps) => {
         <Link to={LINKS.Root.path}>
           <Button variant="outline-success">Назад</Button>
         </Link>
-        <UserCard {...props} />
-        <PostsList posts={posts} />
+        <UserCard userId={Number(userId)} />
+        {loading ? (
+          <div>
+            <Spinner animation="border" />
+          </div>
+        ) : (
+          <PostsList posts={posts} />
+        )}
       </main>
     </Container>
   );
 };
 
-const UserCard = ({ loading }: IUserInfoProps) => {
-  const { name, username, email, company, website, phone } = mockUser;
+const UserCard = ({ userId }: IUserCardProps) => {
+  const dispatch = useDispatch();
+  const user = useSelector(userInfoSelector);
+  const loading = useSelector(userLoadingSelector);
+
+  useEffect(() => {
+    dispatch({ type: fetchUserInfoRequested.type, payload: { userId } });
+  }, [dispatch, userId]);
 
   if (loading) {
     return (
@@ -58,15 +86,15 @@ const UserCard = ({ loading }: IUserInfoProps) => {
   }
   return (
     <div className={`rounded mt-4 p-3 bg-light bg-gradient ${style.card}`}>
-      <p className="h4">{username}</p>
-      <p className="h6">{name}</p>
+      <p className="h4">{user?.username}</p>
+      <p className="h6">{user?.name}</p>
       <div className="rounded">
-        <p className="mt-3">{`${name} работает в компании ${company.name}.`}</p>
+        <p className="mt-3">{`${user?.name} работает в компании ${user?.company.name}.`}</p>
         <p className="fw-semibold">Контакты:</p>
         <ListGroup>
-          <ListGroup.Item>{`email: ${email}`}</ListGroup.Item>
-          <ListGroup.Item>{`телефон: ${phone}`}</ListGroup.Item>
-          <ListGroup.Item>{`сайт: ${website}`}</ListGroup.Item>
+          <ListGroup.Item>{`email: ${user?.email}`}</ListGroup.Item>
+          <ListGroup.Item>{`телефон: ${user?.phone}`}</ListGroup.Item>
+          <ListGroup.Item>{`сайт: ${user?.website}`}</ListGroup.Item>
         </ListGroup>
       </div>
     </div>

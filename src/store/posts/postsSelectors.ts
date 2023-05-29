@@ -5,7 +5,7 @@ const selectPosts = (state: RootState) => state.posts;
 
 export const postsSelector = createSelector(
   selectPosts,
-  (posts) => posts.posts
+  (state) => state.posts
 );
 
 export const postsLoadingSelector = createSelector(
@@ -17,3 +17,4 @@ export const postsErrorSelector = createSelector(
   selectPosts,
   (state) => state.error
 );
+

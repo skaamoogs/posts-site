@@ -1,24 +1,29 @@
-import { ActionCreatorWithPayload, createAction } from "@reduxjs/toolkit";
-import { PostActionTypes } from "./const";
 import { call, put, takeLatest } from "redux-saga/effects";
 import PostsAPI from "../../api/posts.api";
-import { fetchFailed, fetchRequested, fetchSucceeded } from "./postsSlice";
-import { IAction, ResponseGenerator } from "../interfaces";
-import { IPost } from "../../interfaces";
+import { AxiosResponse } from "axios";
+import {
+  fetchPostsFailed,
+  fetchPostsRequested,
+  fetchPostsSucceeded,
+} from "./postsSlice";
+import { RESPONSE_DELAY } from "../const";
 
 function* fetchPosts() {
   try {
-    const response: ResponseGenerator = yield call(PostsAPI.getPosts);
+    const response: AxiosResponse = yield call(PostsAPI.getPosts);
     if (response.status === 200) {
-      yield put(fetchSucceeded(response.data));
+      const delay = async () =>
+        await new Promise((resolve) => setTimeout(resolve, RESPONSE_DELAY));
+      yield call(delay);
+      yield put(fetchPostsSucceeded(response.data));
     } else {
-      yield put(fetchFailed(response.statusText));
+      yield put(fetchPostsFailed(response.statusText));
     }
-  } catch (error) {
-    yield put(fetchFailed(error));
+  } catch (error: any) {
+    yield put(fetchPostsFailed(error?.message));
   }
 }
 
 export function* postsSaga() {
-  yield takeLatest(fetchRequested.type, fetchPosts);
+  yield takeLatest(fetchPostsRequested.type, fetchPosts);
 }

@@ -1,13 +1,4 @@
-export interface IAction {
-  payload: any;
+export interface IAction<T> {
+  payload: T;
   type: string;
-}
-
-export interface ResponseGenerator{
-  config?:any,
-  data?:any,
-  headers?:any,
-  request?:any,
-  status?:number,
-  statusText?:string
 }

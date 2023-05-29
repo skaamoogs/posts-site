@@ -1,10 +1,11 @@
-import { Middleware, combineReducers, configureStore } from "@reduxjs/toolkit";
+import { combineReducers, configureStore } from "@reduxjs/toolkit";
 import createSagaMiddleware from "redux-saga";
+import logger from "redux-logger";
 import { postsReducer } from "./posts/postsSlice";
 import { rootSaga } from "./rootSaga";
-import logger from "redux-logger";
+import { userReducer } from "./user/userSlice";
 
-const rootReducer = combineReducers({ posts: postsReducer });
+const rootReducer = combineReducers({ posts: postsReducer, user: userReducer });
 
 const sagaMiddleWare = createSagaMiddleware();
 
@@ -21,4 +22,5 @@ export const store = configureStore({
 
 sagaMiddleWare.run(rootSaga);
 
-export type RootState = ReturnType<typeof rootReducer>;
+export type RootState = ReturnType<typeof store.getState>;
+export type AppDispatch = typeof store.dispatch;

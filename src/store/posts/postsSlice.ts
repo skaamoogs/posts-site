@@ -1,10 +1,10 @@
-import { createAction, createSlice } from "@reduxjs/toolkit";
+import { createSlice } from "@reduxjs/toolkit";
 import { IPost } from "../../interfaces";
 
 interface IPostsState {
   posts: IPost[];
   loading: boolean;
-  error?: string;
+  error?: unknown;
 }
 
 const initialState: IPostsState = { posts: [], loading: false };
@@ -13,21 +13,21 @@ const postsSlice = createSlice({
   name: "posts",
   initialState,
   reducers: {
-    fetchRequested: (state) => {
+    fetchPostsRequested: (state) => {
       state.loading = true;
     },
-    fetchSucceeded: (state, action) => {
+    fetchPostsSucceeded: (state, action) => {
       state.loading = false;
       state.posts = action.payload;
     },
-    fetchFailed: (state, action) => {
+    fetchPostsFailed: (state, action) => {
       state.loading = false;
       state.error = action.payload;
     },
   },
 });
 
-export const { fetchRequested, fetchFailed, fetchSucceeded } =
+export const { fetchPostsRequested, fetchPostsFailed, fetchPostsSucceeded } =
   postsSlice.actions;
 
 export const postsReducer = postsSlice.reducer;
