@@ -1,27 +1,24 @@
-import { IPageProps, IPost } from "../../interfaces";
+import { IPageProps } from "../../interfaces";
 import { PostsList } from "../../components/posts-list/posts-list";
-import { useEffect, useState } from "react";
-import PostsController from "../../controllers/posts.controller";
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  postsLoadingSelector,
+  postsSelector,
+} from "../../store/posts/postsSelectors";
+import { fetchRequested } from "../../store/posts/postsSlice";
 
 export const Home = ({ title }: IPageProps) => {
-  const [posts, setPosts] = useState<IPost[]>([]);
-  const [loading, setLoading] = useState<boolean>(true);
+  const dispatch = useDispatch();
+  const posts = useSelector(postsSelector);
+  const loading = useSelector(postsLoadingSelector);
 
   useEffect(() => {
-    console.log("useEffect");
     const getPosts = async () => {
-      const posts = await PostsController.getPosts();
-      if (posts) {
-        setPosts(posts);
-        setLoading(false)
-      }
+      dispatch(fetchRequested());
     };
     getPosts();
-    console.log("loaded");
-  }, []);
-
-  console.log("render");
-  console.log(`${posts} имеет длину ${posts.length}`);
+  }, [dispatch]);
 
   return (
     <>
