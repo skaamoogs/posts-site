@@ -4,8 +4,13 @@ import logger from "redux-logger";
 import { postsReducer } from "./posts/postsSlice";
 import { rootSaga } from "./rootSaga";
 import { userReducer } from "./user/userSlice";
+import { commentsReducer } from "./comments/commentsSlice";
 
-const rootReducer = combineReducers({ posts: postsReducer, user: userReducer });
+const rootReducer = combineReducers({
+  posts: postsReducer,
+  user: userReducer,
+  comments: commentsReducer,
+});
 
 const sagaMiddleWare = createSagaMiddleware();
 

@@ -1,20 +1,33 @@
-import { Col, Offcanvas, Row } from "react-bootstrap";
+import { Col, Offcanvas, Row, Spinner } from "react-bootstrap";
 import { Post } from "../post/post";
-import { mockComments, mockPosts } from "../../const";
 import { Comment } from "../comment/comment";
 import { useState } from "react";
 import { IPost } from "../../interfaces";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchCommentsRequested } from "../../store/comments/commentsSlice";
+import { IAction } from "../../store/interfaces";
+import { ICommentsPayload } from "../../store/comments/commentsSaga";
+import {
+  commentsLoadingSelector,
+  commentsSelector,
+} from "../../store/comments/commentsSelector";
 
 interface IPostListProps {
   posts: IPost[];
-  loading?: boolean;
 }
 
 export const PostsList = (props: IPostListProps) => {
   const [show, setShow] = useState(false);
-  const { posts, loading } = props;
+  const dispatch = useDispatch();
+  const { posts } = props;
+  const comments = useSelector(commentsSelector);
+  const loading = useSelector(commentsLoadingSelector);
 
-  const showComments = () => {
+  const showComments = (postId: number) => {
+    dispatch<IAction<ICommentsPayload>>({
+      type: fetchCommentsRequested.type,
+      payload: { postId },
+    });
     setShow(true);
   };
 
@@ -31,7 +44,6 @@ export const PostsList = (props: IPostListProps) => {
               {...post}
               avatarSrc="/avatar.jpg"
               showComments={showComments}
-              loading={loading}
             />
           </Col>
         ))}
@@ -41,9 +53,15 @@ export const PostsList = (props: IPostListProps) => {
           <Offcanvas.Title>Комментарии</Offcanvas.Title>
         </Offcanvas.Header>
         <Offcanvas.Body>
-          {mockComments.map((comment) => {
-            return <Comment key={comment.id} {...comment} />;
-          })}
+          {loading ? (
+            <div className="d-flex justify-content-center align-items-center h-100">
+              <Spinner animation="border" />
+            </div>
+          ) : (
+            comments.map((comment) => {
+              return <Comment key={comment.id} {...comment} />;
+            })
+          )}
         </Offcanvas.Body>
       </Offcanvas>
     </>

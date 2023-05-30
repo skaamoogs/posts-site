@@ -6,38 +6,69 @@ import {
   postsSelector,
 } from "../../store/posts/postsSelectors";
 import { fetchPostsRequested } from "../../store/posts/postsSlice";
-import { Spinner } from "react-bootstrap";
+import { ButtonGroup, Spinner, ToggleButton } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import style from "./home.module.scss";
+import { SortIcon } from "../../icons/sortIcon";
+import { PaginationComponent } from "../../components/pagination/paginationComponent";
+import { usePaginator } from "../../hooks/usePaginator";
 
-const filterPosts = (posts: IPost[], searchValue: string) => {
-  if (searchValue) {
-    return posts.filter((post) =>
-      post.title.toLowerCase().includes(searchValue.toLowerCase())
-    );
-  }
-  return posts;
-};
+const ITEMS_PER_PAGE = 4;
 
 export const Home = ({ title }: IPageProps) => {
   const [searchValue, setSearchValue] = useState("");
+  const [sortChecked, setSortChecked] = useState(false);
+
+  const [filteredPosts, setFilteredPosts] = useState<IPost[]>([]);
+  const [posts, setPosts] = useState<IPost[]>([]);
+
   const dispatch = useDispatch();
-  const posts = useSelector(postsSelector);
+  const fetchedPosts = useSelector(postsSelector);
   const loading = useSelector(postsLoadingSelector);
+
+  const [page, showPage] = usePaginator();
 
   useEffect(() => {
     dispatch(fetchPostsRequested());
   }, [dispatch]);
 
+  useEffect(() => {
+    if (searchValue) {
+      setFilteredPosts(
+        fetchedPosts.filter((post) =>
+          post.title.toLowerCase().includes(searchValue.toLowerCase())
+        )
+      );
+    } else {
+      setFilteredPosts(fetchedPosts);
+    }
+  }, [fetchedPosts, searchValue]);
+
+  useEffect(() => {
+    if (sortChecked) {
+      setPosts(
+        filteredPosts.slice().sort((a, b) => (a.title < b.title ? -1 : 1))
+      );
+    } else {
+      setPosts(filteredPosts);
+    }
+  }, [filteredPosts, sortChecked]);
+
   const searchPost = (event: ChangeEvent<HTMLInputElement>) => {
     setSearchValue(event.target.value);
   };
+
+  const checkHandler = (event: ChangeEvent<HTMLInputElement>) => {
+    setSortChecked(event.target.checked);
+  };
+
+  const pagesNumber = Math.ceil(posts.length / ITEMS_PER_PAGE);
 
   return (
     <>
       {title && <p className="h1">{title}</p>}
       {loading ? (
-        <div className="d-flex justify-content-center align-items-center min-vh-100">
+        <div className="position-absolute top-50 start-50 translate-middle">
           <Spinner animation="border" />
         </div>
       ) : (
@@ -50,9 +81,34 @@ export const Home = ({ title }: IPageProps) => {
               value={searchValue}
               onChange={searchPost}
             />
-            <button></button>
+            <ButtonGroup>
+              <ToggleButton
+                id="toggle-check"
+                type="checkbox"
+                variant="outline-dark"
+                checked={sortChecked}
+                value="1"
+                onChange={checkHandler}
+              >
+                <SortIcon />
+              </ToggleButton>
+            </ButtonGroup>
           </div>
-          <PostsList posts={filterPosts(posts, searchValue)} />
+          {pagesNumber > 1 && (
+            <div className="d-flex justify-content-center">
+              <PaginationComponent
+                pagesCount={pagesNumber}
+                visibleItemsNumber={5}
+                pageHandler={showPage}
+              />
+            </div>
+          )}
+          <PostsList
+            posts={posts.slice(
+              (page - 1) * ITEMS_PER_PAGE,
+              page * ITEMS_PER_PAGE
+            )}
+          />
         </>
       )}
     </>

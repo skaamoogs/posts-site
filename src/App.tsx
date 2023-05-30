@@ -1,6 +1,6 @@
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import { RouteObject } from "react-router-dom";
-import { LINKS, mockUser } from "./const";
+import { LINKS } from "./const";
 import { Home } from "./pages/home/home";
 import "./App.scss";
 import { Layout } from "./pages/layout/layout";

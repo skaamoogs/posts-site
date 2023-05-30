@@ -42,11 +42,11 @@ export const UserInfo = () => {
     <Container className="my-4">
       <main>
         <Link to={LINKS.Root.path}>
-          <Button variant="outline-success">Назад</Button>
+          <Button variant="outline-primary">Назад</Button>
         </Link>
         <UserCard userId={Number(userId)} />
         {loading ? (
-          <div>
+          <div className="d-flex justify-content-center mt-5">
             <Spinner animation="border" />
           </div>
         ) : (

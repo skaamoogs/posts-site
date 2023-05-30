@@ -1,5 +1,4 @@
 import { Button, Card, Col, Placeholder, Row } from "react-bootstrap";
-import style from "./post.module.scss";
 import { Link } from "react-router-dom";
 import { LINKS } from "../../const";
 import { Avatar } from "../avatar/avatar";
@@ -8,7 +7,7 @@ import { IPost } from "../../interfaces";
 interface IPostProps extends IPost {
   avatarSrc: string;
   loading?: boolean;
-  showComments: () => void;
+  showComments: (postId: number) => void;
 }
 
 export const Post = (props: IPostProps) => {
@@ -29,6 +28,10 @@ export const Post = (props: IPostProps) => {
 };
 
 const CardBody = (props: IPostProps) => {
+  const showCommentsHandler = () => {
+    props.showComments(props.id);
+  };
+  
   if (props.loading) {
     return (
       <Card.Body>
@@ -39,7 +42,7 @@ const CardBody = (props: IPostProps) => {
           <Placeholder xs={7} /> <Placeholder xs={4} /> <Placeholder xs={4} />
           <Placeholder xs={6} /> <Placeholder xs={8} />
         </Placeholder>
-        <Placeholder.Button variant="outline-success" xs={6} />
+        <Placeholder.Button variant="outline-primary" xs={6} />
       </Card.Body>
     );
   }
@@ -47,7 +50,7 @@ const CardBody = (props: IPostProps) => {
     <Card.Body>
       <Card.Title>{props.title}</Card.Title>
       <Card.Text>{props.body}</Card.Text>
-      <Button variant="outline-success" onClick={props.showComments}>
+      <Button variant="outline-primary" onClick={showCommentsHandler}>
         Комментарии
       </Button>
     </Card.Body>
